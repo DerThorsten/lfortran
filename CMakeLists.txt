@@ -27,6 +27,11 @@ if (NOT CMAKE_BUILD_TYPE)
         CACHE STRING "Build type (Debug, Release)" FORCE)
 endif ()
 
+# add global definition  to avoid the error:
+#   $BUILD_PREFIX/include/llvm/Object/SymbolicFile.h:48:30: error: expected ')' before 'PRIxPTR'
+#     │ │    48 |   OS << "(" << format("0x%08" PRIxPTR, D.p) << " (" << format("0x%08x", D.d.a)
+add_compile_definitions(__STDC_FORMAT_MACROS)
+
 # xeus does use `dynamic_cast` and thus needs rtti (otherwise it segfaults)
 if (NOT WITH_XEUS)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
